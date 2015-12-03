@@ -41,4 +41,7 @@ public class Produto {
 	@ManyToOne
 	private Promocao promocao;
 	
+	@ManyToOne
+	private Imagem imagem;
+	
 }
