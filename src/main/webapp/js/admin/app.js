@@ -40,11 +40,9 @@ function basic_crud($http, url, elements_name) {
 		},
 		save: function(object) {
 			var method = object._links ? $http.put : $http.post
-			var save_url = object._links ? object._links.self.url : url
-					console.log( 'xx' )
-					console.log( object )
+			var save_url = object._links ? object._links.self.href : url
 			return method(save_url, object)
-		},
+		}
 		elements_name: elements_name
     }
 }
