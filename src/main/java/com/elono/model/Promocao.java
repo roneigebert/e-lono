@@ -42,7 +42,4 @@ public class Promocao {
 	@OneToMany( mappedBy = "promocao" )
 	private List<Produto> produtos;
 
-	@NotNull
-	@OneToMany( mappedBy = "promocao" )
-	private List<Categoria> categorias;
 }

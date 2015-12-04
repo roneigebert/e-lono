@@ -12,6 +12,12 @@ config = [
 		controller: 'produtosController',
 		nome: 'Produtos',
 		url: '/produtos'
+	},
+	{
+		template: 'templates/admin/categorias.html',
+		controller: 'categoriasController',
+		nome: 'Categorias',
+		url: '/categorias'
 	}
 ]
 
@@ -25,8 +31,28 @@ app.config(['$routeProvider', function($routeProvider) {
 	$routeProvider.otherwise({
     	redirectTo: '/pedidos'
     })
- }])
- 
+}])
+
+function basic_crud($http, url, elements_name) {
+	return {
+    	find: function() {
+			return $http.get(url)
+		},
+		save: function(object) {
+			var method = object._links ? $http.put : $http.post
+			var save_url = object._links ? object._links.self.url : url
+					console.log( 'xx' )
+					console.log( object )
+			return method(save_url, object)
+		},
+		elements_name: elements_name
+    }
+}
+
+app.factory('categoriaService', function($http){
+    return basic_crud( $http, '/categorias', 'categorias' )
+})
+
 app.controller('adminController', function($scope) {
 	$scope.templates = config
 	
