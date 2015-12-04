@@ -16,7 +16,7 @@
 					<button ng-click="cadastro( elemento )" class="btn btn-default btn-small">
 						<i class="glyphicon glyphicon-pencil"></i>
 					</button>
-					<button class="btn btn-default btn-danger">
+					<button class="btn btn-default btn-danger" ng-really-message="Deseja realmente excluir?" ng-really-click="remove($index, elemento)">
 						<i class="glyphicon glyphicon-remove"></i>
 					</button>
 				</td>
@@ -42,5 +42,5 @@
 	</form>
 </div>
 <div ng-if="view_atual == 'loading'">
-	
+	<div ng-include="'loader.html'"></div>
 </div>

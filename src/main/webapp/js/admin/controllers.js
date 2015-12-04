@@ -2,15 +2,16 @@ function basic_controller($scope, service) {
 	
 	$scope.listagem = function() {
 		$scope.view_atual = 'loading'
-		service.find().success(function(data) {
-			$scope.onLoadListagem( data._embedded[service.elements_name] )
-		})
+		setTimeout(function() {
+			service.find().success(function(data) {
+				$scope.onLoadListagem( data._embedded[service.elements_name] )
+			})
+		}, 500)
 	}
 	
 	$scope.onLoadListagem = function(lista) {
 		$scope.view_atual = 'listagem'
 		$scope.lista = lista
-		console.log( $scope.lista )
 	}
 	
 	$scope.cadastro = function(element) {
@@ -22,6 +23,12 @@ function basic_controller($scope, service) {
 		console.log( service.save )
 		service.save( $scope.form_element ).success(function() {
 			$scope.listagem()
+		})
+	}
+	
+	$scope.remove = function(index, element){
+		service.remove(element).success(function() {
+			$scope.lista.splice( index, 1 )
 		})
 	}
 	
