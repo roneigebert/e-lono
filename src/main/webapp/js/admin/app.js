@@ -64,6 +64,9 @@ function basic_crud($http, url, elements_name) {
     	find: function() {
 			return $http.get(url)
 		},
+		get: function(get_url){
+			return $http.get(get_url)
+		},
 		save: function(object) {
 			var method = object._links ? $http.put : $http.post
 			var save_url = object._links ? object._links.self.href : url
@@ -78,7 +81,11 @@ function basic_crud($http, url, elements_name) {
 }
 
 app.factory('categoriaService', function($http){
-    return basic_crud( $http, 'http://localhost:8080/categorias/', 'categorias' )
+    return basic_crud( $http, '/categorias/', 'categorias' )
+})
+
+app.factory('produtoService', function($http){
+    return basic_crud( $http, '/produtos/', 'produtos' )
 })
 
 app.controller('adminController', function($scope) {

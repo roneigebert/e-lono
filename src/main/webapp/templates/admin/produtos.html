@@ -1,1 +1,82 @@
-<p>produtos</p>
+<div ng-if="view_atual == 'listagem'">
+	<button class="btn btn-primary" ng-click="cadastro()">
+		<i class="glyphicon glyphicon-plus"></i> Cadastro
+	</button>
+	<table class="table table-striped">
+		<thead>
+			<tr>
+				<th>Nome</th>
+				<th>Descrição</th>
+				<th>Valor</th>
+				<th>Disponível</th>
+				<th></th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr ng-repeat="elemento in lista">
+				<td>{{elemento.nome}}</td>
+				<td>{{elemento.descricao}}</td>
+				<td>{{elemento.valor}}</td>
+				<td>{{elemento.disponivel}}</td>
+				<td align="right">
+					<button ng-click="cadastro( elemento )" class="btn btn-default btn-small">
+						<i class="glyphicon glyphicon-pencil"></i>
+					</button>
+					<button class="btn btn-default btn-danger" ng-really-message="Deseja realmente excluir?" ng-really-click="remove($index, elemento)">
+						<i class="glyphicon glyphicon-remove"></i>
+					</button>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+</div>
+<div ng-if="view_atual == 'cadastro'">
+	<h2>Cadastro</h2>
+	<form class="form-horizontal" role="form">
+		<div class="form-group">
+			<label class="control-label col-sm-2" for="nome">Nome:</label>
+			<div class="col-sm-10">
+				<input ng-model="form_element.nome" class="form-control" id="nome" placeholder="Nome">
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="control-label col-sm-2" for="descricao">Descrição:</label>
+			<div class="col-sm-10">
+				<input ng-model="form_element.descricao" class="form-control" id="descricao" placeholder="Descrição">
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="control-label col-sm-2" for="valor">Categoria:</label>
+			<div class="col-sm-10">
+				<select class="form-control" id="categoria" ng-model="form_element.categoria" ng-options="categoria._links.self.href as categoria.nome for categoria in categorias">
+				</select>
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="control-label col-sm-2" for="valor">Valor:</label>
+			<div class="col-sm-10">
+				<input ng-model="form_element.valor" class="form-control" id="valor" placeholder="Valor">
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="control-label col-sm-2" for="valor">Disponível:</label>
+			<div class="col-sm-10">
+				<div class="checkbox">
+					<label>
+						<input ng-model="form_element.disponivel" id="disponivel" type="checkbox">
+						{{form_element.disponivel ? 'Disponível' : 'Indisponível'}}
+					</label>
+				</div>
+			</div>
+		</div>
+		<div class="form-group">
+			<div class="col-sm-offset-2 col-sm-10">
+				<button ng-click="salvar()" class="btn btn-primary">Salvar</button>
+				<button ng-click="listagem()" class="btn btn-default">Cancelar</button>
+			</div>
+		</div>
+	</form>
+</div>
+<div ng-if="view_atual == 'loading'">
+	<div ng-include="'loader.html'"></div>
+</div>

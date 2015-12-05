@@ -2,25 +2,24 @@ function basic_controller($scope, service) {
 	
 	$scope.listagem = function() {
 		$scope.view_atual = 'loading'
-		setTimeout(function() {
-			service.find().success(function(data) {
-				$scope.onLoadListagem( data._embedded[service.elements_name] )
-			})
-		}, 500)
+		service.find().success(function(data) {
+			$scope.onLoadSuccessfully( data._embedded[service.elements_name] )
+		})
 	}
 	
-	$scope.onLoadListagem = function(lista) {
+	$scope.onLoadSuccessfully = function(lista) {
 		$scope.view_atual = 'listagem'
 		$scope.lista = lista
+		call( $scope.onLoadListagem )
 	}
 	
 	$scope.cadastro = function(element) {
 		$scope.view_atual = 'cadastro'
 		$scope.form_element = element || {}
+		call( $scope.onLoadCadastro )
 	}
 	
 	$scope.salvar = function() {
-		console.log( service.save )
 		service.save( $scope.form_element ).success(function() {
 			$scope.listagem()
 		})
@@ -36,11 +35,28 @@ function basic_controller($scope, service) {
 }
 
 app.controller('pedidosController', function($scope) {
-
+	
 })
 
-app.controller('produtosController', function($scope) {
+app.controller('produtosController', function($scope, produtoService, categoriaService) {
 
+	$scope.onLoadCadastro = function() {
+		categoriaService.find().success( $scope.onLoadCategorias )
+	}
+	
+	$scope.onLoadCategorias = function(data) {
+		var categorias = data._embedded[categoriaService.elements_name]
+		if ( $scope.form_element._links )
+			categoriaService.get( $scope.form_element._links.categoria.href ).success(function(categoriaData) {
+				$scope.form_element.categoria = categoriaData._links.self.href
+				$scope.categorias = categorias
+			})
+		else
+			$scope.categorias = categorias
+	}
+	
+	basic_controller($scope, produtoService, 'produtos')
+	
 })
 
 app.controller('categoriasController', function($scope, categoriaService) {
