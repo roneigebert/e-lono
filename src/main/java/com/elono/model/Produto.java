@@ -32,16 +32,17 @@ public class Produto {
 	private String descricao;
 
 	@NotNull
-	@Column( name = "disponivel")
-	private Boolean disponivel;	
-	
+	@Column( name = "disponivel" )
+	private Boolean disponivel;
+
+	@NotNull
+	@Column( name = "imagem" )
+	private String imagem;
+
 	@ManyToOne
 	private Categoria categoria;
-	
+
 	@ManyToOne
 	private Promocao promocao;
-	
-	@ManyToOne
-	private Imagem imagem;
-	
+
 }

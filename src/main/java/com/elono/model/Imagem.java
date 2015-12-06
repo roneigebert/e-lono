@@ -1,15 +1,9 @@
 package com.elono.model;
 
 
-import java.util.List;
-
-import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
-import javax.validation.constraints.NotNull;
+import javax.persistence.Lob;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -20,14 +14,12 @@ import lombok.Setter;
 public class Imagem {
 	
 	@Id
-	@GeneratedValue( strategy = GenerationType.AUTO )
-	private long id;
+    private String filename;
 
-	@NotNull
-	@Column( name = "endereco", length = 100 )
-	private String endereco;
+    @Lob
+    private byte[] file;
 
-	@OneToMany( mappedBy = "imagem" )
-	private List<Produto> produtos;
+    private String mimeType;
+		
 
 }
