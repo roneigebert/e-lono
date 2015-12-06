@@ -44,6 +44,12 @@ config = [
 		controller: 'categoriasController',
 		nome: 'Categorias',
 		url: '/categorias'
+	},
+	{
+		template: 'templates/admin/imagem.html',
+		controller: 'imagensController',
+		nome: 'Imagem',
+		url: '/imagens'
 	}
 ]
 
@@ -80,12 +86,12 @@ function basic_crud($http, url, elements_name) {
     }
 }
 
-app.factory('categoriaService', function($http){
-    return basic_crud( $http, '/categorias/', 'categorias' )
+app.factory('categoriaService', function($http, config){
+    return basic_crud( $http, config.baseUrl + '/categorias/', 'categorias' )
 })
 
-app.factory('produtoService', function($http){
-    return basic_crud( $http, '/produtos/', 'produtos' )
+app.factory('produtoService', function($http, config){
+    return basic_crud( $http, config.baseUrl + '/produtos/', 'produtos' )
 })
 
 app.controller('adminController', function($scope) {
