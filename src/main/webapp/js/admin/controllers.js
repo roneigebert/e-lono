@@ -15,7 +15,7 @@ function basic_controller($scope, service) {
 	
 	$scope.cadastro = function(element) {
 		$scope.view_atual = 'cadastro'
-		$scope.form_element = element || {}
+		$scope.form_element = element || { disponivel: true }
 		call( $scope.onLoadCadastro )
 	}
 	
