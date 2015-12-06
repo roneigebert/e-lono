@@ -15,8 +15,12 @@ function basic_controller($scope, service) {
 	
 	$scope.cadastro = function(element) {
 		$scope.view_atual = 'cadastro'
-		$scope.form_element = element || { disponivel: true }
+		$scope.form_element = element || {}
 		call( $scope.onLoadCadastro )
+	}
+	
+	$scope.is_new = function() {
+		return $scope.form_element._links == undefined
 	}
 	
 	$scope.salvar = function() {
@@ -42,6 +46,8 @@ app.controller('produtosController', function($scope, produtoService, categoriaS
 
 	$scope.onLoadCadastro = function() {
 		categoriaService.find().success( $scope.onLoadCategorias )
+		if ( $scope.is_new() )
+			$scope.form_element.disponivel = true
 	}
 	
 	$scope.onLoadCategorias = function(data) {
@@ -56,6 +62,39 @@ app.controller('produtosController', function($scope, produtoService, categoriaS
 	}
 	
 	basic_controller($scope, produtoService, 'produtos')
+	
+})
+
+app.controller('promocoesController', function($scope, promocaoService, produtoService) {
+	
+	$scope.onLoadListagem = function() {
+		$scope.lista.forEach(function(element) {
+			produtoService.get( element._links.produto.href ).success(function(produto) {
+				element.produto = produto
+			})
+		})
+	}
+	
+	$scope.onLoadCadastro = function() {
+		produtoService.find().success( $scope.onLoadProdutos )
+		if ( $scope.is_new() )
+			$scope.form_element.todosProdutos = false
+		else
+			$scope.form_element.validade = $scope.form_element.validade.substr(0, 10)
+	}
+	
+	$scope.onLoadProdutos = function(data) {
+		var produtos = data._embedded[produtoService.elements_name]
+		if ( $scope.form_element._links && !$scope.form_element.todosProdutos )
+			promocaoService.get( $scope.form_element._links.produto.href ).success(function(produtoData) {
+				$scope.form_element.produto = produtoData._links.self.href
+				$scope.produtos = produtos
+			})
+		else
+			$scope.produtos = produtos
+	}
+	
+	basic_controller($scope, promocaoService, 'promocoes')
 	
 })
 

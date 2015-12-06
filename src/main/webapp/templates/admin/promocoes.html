@@ -1,0 +1,77 @@
+<div ng-if="view_atual == 'listagem'">
+	<button class="btn btn-primary" ng-click="cadastro()">
+		<i class="glyphicon glyphicon-plus"></i> Cadastro
+	</button>
+	<p ng-if="lista.length == 0">Nenhum registro encontrado.</p>
+	<table ng-if="lista.length > 0" class="table table-striped">
+		<thead>
+			<tr>
+				<th>Produto</th>
+				<th>Valor (%)</th>
+				<th>Validade</th>
+				<th></th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr ng-repeat="elemento in lista">
+				<td>{{elemento.produto ? elemento.produto.nome : '** Todos produtos **'}}</td>
+				<td>{{elemento.valor}}</td>
+				<td>{{elemento.validade | date: 'dd/MM/yyyy': '+03'}}</td>
+				<td align="right">
+					<button ng-click="cadastro( elemento )" class="btn btn-default btn-small">
+						<i class="glyphicon glyphicon-pencil"></i>
+					</button>
+					<button class="btn btn-default btn-danger" ng-really-message="Deseja realmente excluir?" ng-really-click="remove($index, elemento)">
+						<i class="glyphicon glyphicon-remove"></i>
+					</button>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+</div>
+<div ng-if="view_atual == 'cadastro'">
+	<h2>Cadastro</h2>
+	<form name="promocao_form" class="form-horizontal" role="form">
+		<div class="form-group">
+			<label class="control-label col-sm-2" for="valor">Aplicar p/ todos produtos:</label>
+			<div class="col-sm-10">
+				<div class="checkbox">
+					<label>
+						<input ng-model="form_element.todosProdutos" id="form_element.todosProdutos" ng-change="form_element.produto = undefined" type="checkbox">
+						{{form_element.todosProdutos ? 'Sim' : 'Não'}}
+					</label>
+				</div>
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="control-label col-sm-2" for="produto">Produto:</label>
+			<div class="col-sm-10">
+				<select class="form-control" ng-disabled="form_element.todosProdutos" ng-required="!form_element.todosProdutos" id="produto" ng-model="form_element.produto" ng-options="produto._links.self.href as produto.nome for produto in produtos">
+				</select>
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="control-label col-sm-2" for="valor">Valor (%):</label>
+			<div class="col-sm-10">
+				<input ng-model="form_element.valor" ng-required="true" class="form-control" id="valor" placeholder="Valor" type="number" min="1" max="99">
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="control-label col-sm-2" for="validade">Validade:</label>
+			<div class="col-sm-10">
+				<datepicker date-format="yyyy-MM-dd">
+				 	<input ng-model="form_element.validade" class="form-control" ng-required="true">
+				</datepicker>
+			</div>
+		</div>
+		<div class="form-group">
+			<div class="col-sm-offset-2 col-sm-10">
+				<button ng-click="salvar()" ng-disabled="!promocao_form.$valid" class="btn btn-primary">Salvar</button>
+				<button ng-click="listagem()" class="btn btn-default">Cancelar</button>
+			</div>
+		</div>
+	</form>
+</div>
+<div ng-if="view_atual == 'loading'">
+	<div ng-include="'loader.html'"></div>
+</div>

@@ -39,9 +39,6 @@ public class Produto {
 	private Categoria categoria;
 	
 	@ManyToOne
-	private Promocao promocao;
-	
-	@ManyToOne
 	private Imagem imagem;
 	
 }

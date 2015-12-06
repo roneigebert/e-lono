@@ -1,4 +1,4 @@
-var app = angular.module('adminApp', ['ngRoute']);
+var app = angular.module('adminApp', ['ngRoute', '720kb.datepicker']);
 
 app.directive('ngReallyClick', [function() {
     return {
@@ -44,6 +44,12 @@ config = [
 		controller: 'categoriasController',
 		nome: 'Categorias',
 		url: '/categorias'
+	},
+	{
+		template: 'templates/admin/promocoes.html',
+		controller: 'promocoesController',
+		nome: 'Promoções',
+		url: '/promocoes'
 	}
 ]
 
@@ -86,6 +92,10 @@ app.factory('categoriaService', function($http){
 
 app.factory('produtoService', function($http){
     return basic_crud( $http, '/produtos/', 'produtos' )
+})
+
+app.factory('promocaoService', function($http){
+    return basic_crud( $http, '/promocoes/', 'promocoes' )
 })
 
 app.controller('adminController', function($scope) {
