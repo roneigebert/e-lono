@@ -1,16 +1,13 @@
 package com.elono.model;
 
 import java.util.Date;
-import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotNull;
 
 import lombok.Getter;
@@ -26,20 +23,19 @@ public class Promocao {
 	private long id;
 
 	@NotNull
-	@Column( name = "nome", length = 50 )
-	private String nome;
+	@Column( name = "validade" )
+	private Date validade;
+	
+	//sempre em %
+	@NotNull
+	@Column( name="valor" )
+	private int valor;
 
 	@NotNull
-	@Enumerated( EnumType.STRING )
-	@Column( name = "tipo" )
-	private EnumPromocao tipo;
-
-	@NotNull
-	@Column( name = "dataValidade" )
-	private Date dataValidade;
-
-	@NotNull
-	@OneToMany( mappedBy = "promocao" )
-	private List<Produto> produtos;
+	@Column( name = "todosProdutos" )
+	private boolean todosProdutos;
+	
+	@ManyToOne
+	private Produto produto;
 
 }

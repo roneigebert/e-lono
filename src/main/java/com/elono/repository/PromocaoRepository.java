@@ -5,7 +5,7 @@ import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 
 import com.elono.model.Promocao;
 
-@RepositoryRestResource(collectionResourceRel = "promocao", path = "promocao")
+@RepositoryRestResource(collectionResourceRel = "promocoes", path = "promocoes")
 public interface PromocaoRepository extends JpaRepository<Promocao, Long> {
 
 }
