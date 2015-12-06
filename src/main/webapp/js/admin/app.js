@@ -100,8 +100,8 @@ app.factory('produtoService', function($http, config){
     return basic_crud( $http, config.baseUrl + '/produtos/', 'produtos' )
 })
 
-app.factory('promocaoService', function($http){
-    return basic_crud( $http, '/promocoes/', 'promocoes' )
+app.factory('promocaoService', function($http, config){
+    return basic_crud( $http, config.baseUrl +'/promocoes/', 'promocoes' )
 })
 
 app.controller('adminController', function($scope) {
