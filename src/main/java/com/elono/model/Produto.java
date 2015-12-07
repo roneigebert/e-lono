@@ -15,6 +15,7 @@ import lombok.Setter;
 @Setter
 @Entity
 public class Produto {
+
 	@Id
 	@GeneratedValue( strategy = GenerationType.AUTO )
 	private long id;
@@ -36,9 +37,11 @@ public class Produto {
 	private Boolean disponivel;
 
 	@NotNull
-	@Column( name = "imagem" )
-	private String imagem;
+	@ManyToOne
+	private Imagem imagem;
 
+	@NotNull
 	@ManyToOne
 	private Categoria categoria;
+
 }

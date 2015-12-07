@@ -46,12 +46,6 @@ config = [
 		url: '/categorias'
 	},
 	{
-		template: 'templates/admin/imagem.html',
-		controller: 'imagensController',
-		nome: 'Imagem',
-		url: '/imagens'
-	},
-	{
 		template: 'templates/admin/promocoes.html',
 		controller: 'promocoesController',
 		nome: 'Promoções',
@@ -85,7 +79,6 @@ function basic_crud($http, url, elements_name) {
 			return method(save_url, object)
 		},
 		remove: function(object) {
-			console.log( object._links.self.href )
 			return $http.delete(object._links.self.href)
 		},
 		elements_name: elements_name
@@ -101,7 +94,23 @@ app.factory('produtoService', function($http, config){
 })
 
 app.factory('promocaoService', function($http, config){
-    return basic_crud( $http, config.baseUrl +'/promocoes/', 'promocoes' )
+    return basic_crud( $http, config.baseUrl + '/promocoes/', 'promocoes' )
+})
+
+app.service('imagemService', function ($http, config) {
+    return {
+		upload: function(file){
+		    var formData = new FormData()
+		    formData.append('file', file)
+		    return $http.post('/imagem/upload', formData, {
+		        transformRequest: angular.identity,
+		        headers: {'Content-Type': undefined}
+		    })
+		},
+		getByName: function(name) {
+			return $http.get(config.baseUrl + '/imagens/search/findByName?name=' + name)
+		}
+    }
 })
 
 app.controller('adminController', function($scope) {

@@ -1,55 +1,53 @@
 package com.elono.controllers;
 
-import java.io.BufferedOutputStream;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.nio.file.Paths;
+import java.io.IOException;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.env.Environment;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 
-import lombok.val;
+import com.elono.model.Imagem;
+import com.elono.services.UploadImagemService;
 
-@Controller
+@CrossOrigin
+@RestController
 public class UploadImagemController {
-
+	
 	@Autowired
-	private Environment env;
+	UploadImagemService uploadImagemService;
 
-	@RequestMapping( value = "/uploadImagem", method = RequestMethod.POST )
-	@ResponseBody
-	public ResponseEntity<?> uploadImagem(@RequestParam( "uploadImagem" ) MultipartFile uploadImagem) {
+	@RequestMapping( value = "/imagem/download", method = RequestMethod.GET )
+	public ResponseEntity<?> download( @RequestParam( "name" ) String name) throws IOException{
+		final Imagem imagem = uploadImagemService.findByName( name );
+		if ( imagem == null )
+			return new ResponseEntity<>( "{}", HttpStatus.NOT_FOUND );
+		final HttpHeaders headers = new HttpHeaders();
+		headers.add( "content-disposition", "attachment; filename=" + imagem.getName() );
+		final String primaryType = imagem.getMimeType().split( "/" )[0];
+		final String subType = imagem.getMimeType().split( "/" )[1];
+		headers.setContentType( new MediaType( primaryType, subType ) );
+		return new ResponseEntity<>( imagem.getFile(), headers, HttpStatus.OK );
+	}
 
-		String[] ext = uploadImagem.getOriginalFilename().toLowerCase().split( "\\." );
-
-		val fileUploaded = UUID.randomUUID().toString() + "." + ext[( ext.length - 1 )];
-
-		val directory = env.getProperty( "elono.paths.uploadedImagem" );
-		HttpHeaders headers = new HttpHeaders();
-
-		try {
-			val filePath = new File( Paths.get( directory, fileUploaded ).toString() );
-			val stream = new BufferedOutputStream( new FileOutputStream( filePath ) );
-			stream.write( uploadImagem.getBytes() );
-			stream.close();
-			headers.setLocation( filePath.toURI() );
-		} catch ( Exception e ) {
-			System.out.println( e.getMessage() );
-			e.printStackTrace();
-			return new ResponseEntity<>( HttpStatus.BAD_REQUEST );
-		}
-
-		return new ResponseEntity<Void>( headers, HttpStatus.CREATED );
-	} // method uploadFile
+	@RequestMapping( value = "/imagem/upload", method = RequestMethod.POST )
+	public ResponseEntity<?> uploadFile( MultipartHttpServletRequest request ) throws IOException{
+		final MultipartFile file = request.getFile( "file" );
+		final Imagem imagem = new Imagem();
+		imagem.setFile( file.getBytes() );
+		imagem.setMimeType( file.getContentType() );
+		imagem.setName( UUID.randomUUID().toString() );
+		uploadImagemService.uploadFile( imagem );
+		return new ResponseEntity<>( imagem, HttpStatus.OK );
+	}
 
 }

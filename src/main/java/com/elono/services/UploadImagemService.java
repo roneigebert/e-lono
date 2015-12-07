@@ -18,8 +18,8 @@ public class UploadImagemService {
 	@Autowired
 	ImagemRepository imagemRepository;
 
-	public Imagem findByFilename( String filename ) {
-		return imagemRepository.findByFilename( filename );
+	public Imagem findByName( String filename ) {
+		return imagemRepository.findByName( filename );
 	}
 
 	// Upload the file
@@ -32,7 +32,7 @@ public class UploadImagemService {
 		val listaRetorno = new ArrayList<ImagemFilter>();
 		for ( Imagem imagem : imagemRepository.findAll() ) {
 			listaRetorno.add(
-					new ImagemFilter( imagem.getFilename(), "http://localhost:8080/imagem/download?filename=" + imagem.getFilename() ) );
+					new ImagemFilter( imagem.getName(), "http://localhost:8080/imagem/download?filename=" + imagem.getName() ) );
 		}
 		return listaRetorno;
 	}

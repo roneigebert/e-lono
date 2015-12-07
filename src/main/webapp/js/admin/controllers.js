@@ -42,12 +42,15 @@ app.controller('pedidosController', function($scope) {
 	
 })
 
-app.controller('produtosController', function($scope, produtoService, categoriaService) {
+app.controller('produtosController', function($scope, produtoService, categoriaService, imagemService) {
 
 	$scope.onLoadCadastro = function() {
+		$scope.url_imagem = undefined
 		categoriaService.find().success( $scope.onLoadCategorias )
 		if ( $scope.is_new() )
 			$scope.form_element.disponivel = true
+		else
+			$scope.mostrarImagemProduto()
 	}
 	
 	$scope.onLoadCategorias = function(data) {
@@ -59,6 +62,36 @@ app.controller('produtosController', function($scope, produtoService, categoriaS
 			})
 		else
 			$scope.categorias = categorias
+	}
+	
+	$scope.selecionarImagem = function() {
+		document.getElementById( 'imagem' ).click()
+	}
+	
+	$scope.uploadImage = function() {
+		var file = document.getElementById( 'imagem' ).files[0];
+		imagemService.upload(file).success($scope.onImageUpload).error(function() {
+			$scope.form_element.imagem = undefined
+		})
+	}
+	
+	$scope.onImageUpload = function(data) {
+		imagemService.getByName( data.name ).success(function(imageData) {
+			$scope.mostrarImagem( imageData._links.self.href, data.name)
+		})
+	}
+	
+	$scope.mostrarImagemProduto = function() {
+		produtoService.get($scope.form_element._links.imagem.href).success(function(data) {
+			var urlImagem = data._links.self.href
+			var name = urlImagem.match( /.*\/(.*$)/ )[1]
+			$scope.mostrarImagem( urlImagem, name )
+		})
+	}
+	
+	$scope.mostrarImagem = function(url, name) {
+		$scope.form_element.imagem = url
+		$scope.url_imagem = '/imagem/download?name=' + name
 	}
 	
 	basic_controller($scope, produtoService, 'produtos')
@@ -102,37 +135,4 @@ app.controller('categoriasController', function($scope, categoriaService) {
 	
 	basic_controller($scope, categoriaService, 'categorias')
 	
-})
-
-app.controller('imagensController', function($scope, $http, config) {
-	
-	$scope.listaImagem=[]
-	
-	var getImagem = function () {
-		$scope.view_atual = 'loading'
-		$http.get(config.baseUrlImagem).success(function (data) {
-			$scope.listaImagem = data
-			$scope.view_atual = 'listagem'
-	})};
-	
-	$scope.cadastroImagem = function(){
-		$scope.view_atual = 'cadastro'
-	};
-	
-	$scope.salvarImagem = function(element){
-		console.log(element)
-	};
-	
-	$scope.listagem = function(){
-		getImagem()
-	};
-	
-	var inserirImagem = function (imagem) {
-		$scope.view_atual = 'loading'
-		$http.get(config.baseUrlImagem).success(function (data) {
-			$scope.listaImagem = data
-			$scope.view_atual = 'listagem'
-	})};
-	
-	getImagem();
 })
