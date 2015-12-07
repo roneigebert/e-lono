@@ -47,6 +47,14 @@ function basic_crud($http, url, elements_name) {
     }
 }
 
+app.factory('promocaoService', function($http, config){
+    var crud = basic_crud( $http, config.baseUrl + '/promocoes/', 'promocoes' )
+    crud.findAtivas = function() {
+		return this.find()
+	}
+    return crud
+})
+
 app.factory('produtoService', function($http, config){
     return basic_crud( $http, config.baseUrl + '/produtos/', 'produtos' )
 })

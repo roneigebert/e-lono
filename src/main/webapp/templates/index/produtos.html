@@ -20,16 +20,43 @@
                     <p class="group inner list-group-item-text">{{produto.descricao}}</p>
                     <div class="row">
                         <div class="col-xs-12 col-md-6">
-                            <p class="lead">R$ {{produto.valor}}</p>
+                            <p class="lead" ng-if="!promocao_geral && !produto.promocao">R$ {{produto.valor}}</p>
+                            <p class="lead" ng-if="promocao_geral && !produto.promocao">
+                            	<span class="preco_antigo">De R$ {{produto.valor}}</span><br/>
+                            	por R$ {{produto.valor - (produto.valor * promocao_geral.valor / 100)}}
+                            </p>
+                            <p class="lead" ng-if="produto.promocao">
+                            	<span class="preco_antigo">De R$ {{produto.valor}}</span><br/>
+                            	por R$ {{produto.valor - (produto.valor * produto.promocao.valor / 100)}}
+                            </p>
                         </div>
                         <div class="col-xs-12 col-md-6">
-                            <a class="btn btn-success" href="#">Comprar</a>
+                            <a class="btn btn-success" href="javascript:void(0)" ng-click="add( produto )">Comprar</a>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+</div>
+<div ng-if="view_atual == 'add_produto'">
+	<form name="produto_form" class="form-horizontal" role="form">
+		<div class="form-group">
+			<label class="control-label col-sm-2" for="nome">Quantidade:</label>
+			<div class="col-sm-10">
+				<input type="number" ng-model="form_element.quantidade" ng-required="true" ng-pattern="/^[0-9]+$/" class="form-control" id="quantidade" placeholder="Quantidade">
+			</div>
+		</div>
+		<div ng-show="false">
+			
+		</div>
+		<div class="form-group">
+			<div class="col-sm-offset-2 col-sm-10">
+				<button ng-click="salvar()" ng-disabled="!produto_form.$valid" class="btn btn-primary">Salvar</button>
+				<button ng-click="listagem()" class="btn btn-default">Cancelar</button>
+			</div>
+		</div>
+	</form>
 </div>
 <div ng-if="view_atual == 'loading'">
 	<div ng-include="'loader.html'"></div>
