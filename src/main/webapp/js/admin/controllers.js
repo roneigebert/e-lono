@@ -42,7 +42,7 @@ app.controller('pedidosController', function($scope) {
 	
 })
 
-app.controller('produtosController', function($scope, produtoService, categoriaService, imagemService) {
+app.controller('produtosController', function($scope, config, produtoService, categoriaService, imagemService) {
 
 	$scope.onLoadCadastro = function() {
 		$scope.url_imagem = undefined
@@ -91,7 +91,7 @@ app.controller('produtosController', function($scope, produtoService, categoriaS
 	
 	$scope.mostrarImagem = function(url, name) {
 		$scope.form_element.imagem = url
-		$scope.url_imagem = '/imagem/download?name=' + name
+		$scope.url_imagem = config.imageDownloadUrl + name
 	}
 	
 	basic_controller($scope, produtoService, 'produtos')

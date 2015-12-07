@@ -14,8 +14,8 @@
 		<script type="text/javascript" src="js/angular-datepicker.js"></script>
 		<script type="text/javascript" src="js/commons.js"></script>
 		<script type="text/javascript" src="js/admin/app.js"></script>
+		<script type="text/javascript" src="js/config.js"></script>
 		<script type="text/javascript" src="js/admin/controllers.js"></script>
-		<script type="text/javascript" src="js/value/configValue.js"></script>
 		<script type="text/javascript" src="js/sweetalert-dev.js"></script>
 	</head>
 	<body ng-app="adminApp" ng-controller="adminController">
@@ -36,9 +36,6 @@
 						<li ng-repeat="template in templates" ng-click="changeTemplate(template.url)" ng-class="current_template == template.url ? 'active' : ''">
 							<a href="#{{template.url}}">{{template.nome}}</a>
 						</li>
-					</ul>
-					<ul class="nav navbar-nav navbar-right">
-						<li><a href="#">Sair</a></li>
 					</ul>
 				</div>
 				<!--/.nav-collapse -->

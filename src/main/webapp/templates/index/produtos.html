@@ -1,0 +1,36 @@
+<div ng-if="view_atual == 'listagem'">
+	<div class="well well-sm">
+        <strong>Tipo de listagem</strong>
+        <div class="btn-group">
+            <a href="javascript:void(0)" id="list" class="btn btn-default btn-sm" ng-click="list_style = 'list'">
+            	<span class="glyphicon glyphicon-th-list"></span>Lista
+            </a> 
+            <a href="javascript:void(0)" id="grid" class="btn btn-default btn-sm" ng-click="list_style = 'grid'">
+            	<span class="glyphicon glyphicon-th"></span>Tabela
+            </a>
+        </div>
+    </div>
+    <p ng-if="lista.length == 0">Nenhum registro encontrado.</p>
+    <div id="products" class="row list-group" ng-if="lista.length > 0">
+        <div ng-repeat="produto in lista" ng-class="'item  col-xs-4 col-lg-4 ' + ( list_style == 'grid' ? 'grid-group-item' : 'list-group-item' )">
+            <div class="thumbnail">
+                <img class="group list-group-image" ng-src="{{produto.imagem_url ? produto.imagem_url : 'img/image_loader.gif'}}" />
+                <div class="caption">
+                    <h4 class="group inner list-group-item-heading">{{produto.nome}}</h4>
+                    <p class="group inner list-group-item-text">{{produto.descricao}}</p>
+                    <div class="row">
+                        <div class="col-xs-12 col-md-6">
+                            <p class="lead">R$ {{produto.valor}}</p>
+                        </div>
+                        <div class="col-xs-12 col-md-6">
+                            <a class="btn btn-success" href="#">Comprar</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div ng-if="view_atual == 'loading'">
+	<div ng-include="'loader.html'"></div>
+</div>

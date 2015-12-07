@@ -102,7 +102,7 @@ app.service('imagemService', function ($http, config) {
 		upload: function(file){
 		    var formData = new FormData()
 		    formData.append('file', file)
-		    return $http.post('/imagem/upload', formData, {
+		    return $http.post(config.imageUploadUrl, formData, {
 		        transformRequest: angular.identity,
 		        headers: {'Content-Type': undefined}
 		    })
