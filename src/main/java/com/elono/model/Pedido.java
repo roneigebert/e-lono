@@ -9,7 +9,6 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.validation.constraints.NotNull;
 
@@ -20,12 +19,10 @@ import lombok.Setter;
 @Setter
 @Entity
 public class Pedido {
+	
 	@Id
 	@GeneratedValue( strategy = GenerationType.AUTO )
 	private long id;
-
-	@ManyToOne
-	private Usuario usuario;
 
 	@OneToMany( mappedBy = "pedido" )
 	private List<ItemPedido> itens;
@@ -34,4 +31,5 @@ public class Pedido {
 	@Enumerated( EnumType.STRING )
 	@Column( name = "status_pedido" )
 	private EnumStatusPedido statusPedido;
+	
 }

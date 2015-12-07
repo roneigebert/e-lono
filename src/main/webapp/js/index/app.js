@@ -47,12 +47,23 @@ function basic_crud($http, url, elements_name) {
     }
 }
 
-app.factory('promocaoService', function($http, config){
-    var crud = basic_crud( $http, config.baseUrl + '/promocoes/', 'promocoes' )
-    crud.findAtivas = function() {
-		return this.find()
-	}
-    return crud
+app.factory('promocaoService', function($http, config, $filter){
+    return {
+    	get: function(get_url) {
+    		return $http.get(get_url)
+		},
+    	findAtivas: function() {
+    		return $http.get( config.baseUrl + '/promocoes/search/findByValidadeAfter?validade=' + $filter('date')(new Date(),'yyyyMMdd') )
+    	}
+    }
+})
+
+app.factory('itensService', function($http, config){
+    return {
+    	add: function(item) {
+			return $http.post(config.baseUrl + '/itens/', item)
+		}
+    }
 })
 
 app.factory('produtoService', function($http, config){

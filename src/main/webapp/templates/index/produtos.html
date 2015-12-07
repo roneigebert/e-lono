@@ -40,6 +40,8 @@
     </div>
 </div>
 <div ng-if="view_atual == 'add_produto'">
+	<h2>{{produto.nome}} - R$ {{form_element.valor - form_element.valorDesconto}}</h2>
+	<br/>
 	<form name="produto_form" class="form-horizontal" role="form">
 		<div class="form-group">
 			<label class="control-label col-sm-2" for="nome">Quantidade:</label>
@@ -52,7 +54,7 @@
 		</div>
 		<div class="form-group">
 			<div class="col-sm-offset-2 col-sm-10">
-				<button ng-click="salvar()" ng-disabled="!produto_form.$valid" class="btn btn-primary">Salvar</button>
+				<button ng-click="salvar()" ng-disabled="!produto_form.$valid" class="btn btn-primary">Adicionar ao carrinho</button>
 				<button ng-click="listagem()" class="btn btn-default">Cancelar</button>
 			</div>
 		</div>

@@ -16,13 +16,10 @@ import org.springframework.stereotype.Component;
 public class SimpleCORSFilter implements Filter {
 
 	public SimpleCORSFilter() {
-		// TODO Auto-generated constructor stub
 	}
 
 	@Override
 	public void init( FilterConfig filterConfig ) throws ServletException {
-		// TODO Auto-generated method stub
-
 	}
 
 	@Override
@@ -38,8 +35,6 @@ public class SimpleCORSFilter implements Filter {
 
 	@Override
 	public void destroy() {
-		// TODO Auto-generated method stub
-
 	}
 
 }
