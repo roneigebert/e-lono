@@ -91,6 +91,9 @@ app.factory('pedidoService', function($http, config){
 
 app.factory('produtoService', function($http, config){
     return {
+    	findAtivos: function() {
+    		return $http.get(config.baseUrl + '/produtos/search/findByDisponivel?disponivel=true')
+		},
     	find: function() {
 			return $http.get(config.baseUrl + '/produtos/')
 		},

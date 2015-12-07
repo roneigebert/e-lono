@@ -4,7 +4,7 @@ app.controller('produtosController', function($scope, config, produtoService, pr
 		
 	$scope.listagem = function() {
 		$scope.view_atual = 'loading'
-		produtoService.find().success(function(data) {
+		produtoService.findAtivos().success(function(data) {
 			$scope.lista = data._embedded.produtos
 			$scope.carregarUrlImagens()
 			$scope.view_atual = 'listagem'
