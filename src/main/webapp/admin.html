@@ -23,15 +23,15 @@
 		<nav class="navbar navbar-default navbar-fixed-top">
 			<div class="container">
 				<div class="navbar-header">
-					<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-					<span class="sr-only">Toggle navigation</span>
-					<span class="icon-bar"></span>
-					<span class="icon-bar"></span>
-					<span class="icon-bar"></span>
+					<button type="button" class="navbar-toggle collapsed" ng-click="mostrar_menu = !mostrar_menu" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+						<span class="sr-only">Toggle navigation</span>
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
 					</button>
 					<a class="navbar-brand" href="#">Elono</a>
 				</div>
-				<div id="navbar" class="collapse navbar-collapse">
+				<div id="navbar" ng-class="(mostrar_menu ? 'in' : '') + ' collapse navbar-collapse'">
 					<ul class="nav navbar-nav">
 						<li ng-repeat="template in templates" ng-click="changeTemplate(template.url)" ng-class="current_template == template.url ? 'active' : ''">
 							<a href="#{{template.url}}">{{template.nome}}</a>
