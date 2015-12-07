@@ -1,7 +1,26 @@
 <div ng-if="view_atual == 'listagem'">
 	<p ng-if="itens.length == 0">Nenhum item no carrinho</p>
 	<div ng-if="itens.length > 0">
-		<p ng-repeat="item in itens">{{item}}</p>
+		<table class="table table-striped">
+			<thead>
+				<tr>
+					<th>Nome</th>
+					<th>Valor</th>
+					<th>Desconto</th>
+					<th>Quantidade</th>
+					<th>Total</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr ng-repeat="item in itens">
+					<td>{{item.produto.nome}}</td>
+					<td>{{item.valor}}</td>
+					<td>{{item.valorDesconto}}</td>
+					<td>{{item.quantidade}}</td>
+					<td>{{(item.valor - item.valorDesconto) * item.quantidade}}</td>
+				</tr>
+			</tbody>
+		</table>
 		<div>
 			<button ng-click="finalizarPedido()" class="btn btn-primary">Finalizar pedido</button>
 			<button ng-click="cancelarPedido()" class="btn btn-danger">Cancelar pedido</button>

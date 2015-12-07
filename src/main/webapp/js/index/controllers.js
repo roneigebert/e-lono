@@ -80,7 +80,7 @@ app.controller('produtosController', function($scope, config, produtoService, pr
 	
 })
 
-app.controller('carrinhoController', function($scope, pedidoService, itensService) {
+app.controller('carrinhoController', function($scope, pedidoService, itensService, produtoService ) {
 	
 	$scope.listagem = function() {
 		$scope.view_atual = 'loading'
@@ -91,7 +91,16 @@ app.controller('carrinhoController', function($scope, pedidoService, itensServic
 		$scope.pedido = pedido
 		itensService.get( pedido._links.itens.href ).success(function(data) {
 			$scope.itens = data._embedded.itens
+			$scope.buscarProdutos()
 			$scope.view_atual = 'listagem'
+		})
+	}
+	
+	$scope.buscarProdutos = function() {
+		$scope.itens.forEach(function(item) {
+			produtoService.get( item._links.produto.href ).success(function(produto) {
+				item.produto = produto
+			})
 		})
 	}
 	
