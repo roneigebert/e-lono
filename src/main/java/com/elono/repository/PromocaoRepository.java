@@ -8,4 +8,6 @@ import com.elono.model.Promocao;
 @RepositoryRestResource(collectionResourceRel = "promocoes", path = "promocoes")
 public interface PromocaoRepository extends JpaRepository<Promocao, Long> {
 
+    List<Promocao> findByValidadeAfter( @Param( "validade" ) @DateTimeFormat( pattern = "yyyyMMdd" ) Date validade);
+    
 }
