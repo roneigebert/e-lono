@@ -1,1 +1,24 @@
-<p>pedidos</p>
+<div ng-if="view_atual == 'listagem'">
+	<p ng-if="lista.length == 0">Nenhum registro encontrado.</p>
+	<table ng-if="lista.length > 0" class="table table-striped">
+		<thead>
+			<tr>
+				<th>ID</th>
+				<th>Valor</th>
+				<th>Total Produtos</th>
+				<th>Status</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr ng-repeat="elemento in lista">
+				<td>{{elemento.id}}</td>
+				<td>{{elemento.statusPedido}}</td>
+				<td>{{elemento.extra}}</td>
+			</tr>
+		</tbody>
+	</table>
+</div>
+
+<div ng-if="view_atual == 'loading'">
+	<div ng-include="'loader.html'"></div>
+</div>
