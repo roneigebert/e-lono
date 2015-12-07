@@ -48,10 +48,11 @@ app.controller('pedidosController', function($scope,pedidoService, itemService) 
 	
 	$scope.adicionarInfosPedido = function(pedido) {
 		itemService.get(pedido._links.itens.href).success(function(itens) {
-			var infos = {valor:0, produtos:0}
+			var infos = {valor:0, produtos:0, desconto:0}
 			itens._embedded.itens.forEach(function(item){
 				infos.valor += item.valor
 				infos.produtos += item.quantidade
+				infos.desconto += item.valorDesconto
 			})
 			infos.quantidadeItens = itens._embedded.itens.length
 			pedido.infos = infos

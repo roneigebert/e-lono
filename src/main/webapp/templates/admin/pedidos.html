@@ -5,6 +5,8 @@
 			<tr>
 				<th>ID</th>
 				<th>Valor</th>
+				<th>Desconto</th>
+				<th>Valor com Desconto</th>
 				<th>Status</th>
 				<th>Total Produtos</th>
 			</tr>
@@ -13,6 +15,8 @@
 			<tr ng-repeat="elemento_lista in lista">
 				<td>{{elemento_lista.id}}</td>
 				<td>{{elemento_lista.infos.valor}}</td>
+				<td>{{elemento_lista.infos.desconto}}</td>
+				<td>{{elemento_lista.infos.valor - elemento_lista.infos.desconto}}</td>
 				<td>{{elemento_lista.statusPedido}}</td>
 				<td>{{elemento_lista.infos.quantidadeItens}}</td>
 				<td></td>
