@@ -97,6 +97,14 @@ app.factory('promocaoService', function($http, config){
     return basic_crud( $http, config.baseUrl + '/promocoes/', 'promocoes' )
 })
 
+app.factory('pedidoService', function($http, config){
+	return basic_crud( $http, config.baseUrl + '/pedidos/', 'pedidos' )
+})
+
+app.factory('itemService', function($http, config){
+	return basic_crud( $http, config.baseUrl + '/itens/', 'itens' )
+})
+
 app.service('imagemService', function ($http, config) {
     return {
 		upload: function(file){

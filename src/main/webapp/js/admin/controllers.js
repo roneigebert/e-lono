@@ -38,7 +38,24 @@ function basic_controller($scope, service) {
 	$scope.listagem()
 }
 
-app.controller('pedidosController', function($scope) {
+app.controller('pedidosController', function($scope,pedidoService, itemService) {
+	$scope.onLoadListagem = function() {
+		$scope.lista.forEach(function(element) {
+			var extra = {valor:0, produtos:0}
+			pedidoService.get( element._links.pedido.href ).success(function(pedido) {
+				itemService.get(element._links.itens.href).success(function(item) {
+					item._embedded.itens.forEach(function(listaDados){
+						extra.valor += listaDados.valor
+						extra.produtos += listaDados.quantidade
+					})
+				})
+				pedido.extra = extra
+				element.pedido = pedido
+			})
+		})
+	}
+	
+	basic_controller($scope, pedidoService, 'pedidos')
 	
 })
 
