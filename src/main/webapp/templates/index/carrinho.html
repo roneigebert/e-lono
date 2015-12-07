@@ -1,1 +1,13 @@
-<p>Carrinho</p>
+<div ng-if="view_atual == 'listagem'">
+	<p ng-if="itens.length == 0">Nenhum item no carrinho</p>
+	<div ng-if="itens.length > 0">
+		<p ng-repeat="item in itens">{{item}}</p>
+		<div>
+			<button ng-click="finalizarPedido()" class="btn btn-primary">Finalizar pedido</button>
+			<button ng-click="cancelarPedido()" class="btn btn-danger">Cancelar pedido</button>
+		</div>
+	</div>
+</div>
+<div ng-if="view_atual == 'loading'">
+	<div ng-include="'loader.html'"></div>
+</div>

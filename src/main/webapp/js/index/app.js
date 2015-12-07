@@ -60,14 +60,44 @@ app.factory('promocaoService', function($http, config, $filter){
 
 app.factory('itensService', function($http, config){
     return {
+    	get: function(get_url){
+			return $http.get(get_url)
+		},
     	add: function(item) {
 			return $http.post(config.baseUrl + '/itens/', item)
 		}
     }
 })
 
+app.factory('pedidoService', function($http, config){
+    return {
+    	getOrCreate: function( callback ) {
+			$http.get(config.baseUrl + '/pedidos/search/findByStatusPedido?statusPedido=CARRINHO').success(function(data) {
+				if ( data._embedded.pedidos.length == 0 )
+					$http.post(config.baseUrl + '/pedidos/', {
+						statusPedido: 'CARRINHO'
+					}).success(function(pedidoData) {
+						callback(pedidoData)
+					})
+				else
+					callback( data._embedded.pedidos[0] )
+			})
+		},
+		alterar: function(pedido) {
+			return $http.put(pedido._links.self.href, pedido)
+		}
+    }
+})
+
 app.factory('produtoService', function($http, config){
-    return basic_crud( $http, config.baseUrl + '/produtos/', 'produtos' )
+    return {
+    	find: function() {
+			return $http.get(config.baseUrl + '/produtos/')
+		},
+		get: function(get_url){
+			return $http.get(get_url)
+		}
+    }
 })
 
 app.controller('indexController', function($scope) {

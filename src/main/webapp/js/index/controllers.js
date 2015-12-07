@@ -1,11 +1,11 @@
-app.controller('produtosController', function($scope, config, produtoService, promocaoService, itensService) {
+app.controller('produtosController', function($scope, config, produtoService, promocaoService, itensService, pedidoService) {
 	
-	$scope.view_atual = 'loading'
 	$scope.list_style = 'grid'
 		
 	$scope.listagem = function() {
+		$scope.view_atual = 'loading'
 		produtoService.find().success(function(data) {
-			$scope.lista = data._embedded[produtoService.elements_name]
+			$scope.lista = data._embedded.produtos
 			$scope.carregarUrlImagens()
 			$scope.view_atual = 'listagem'
 			$scope.carregarPromocoes()
@@ -37,15 +37,6 @@ app.controller('produtosController', function($scope, config, produtoService, pr
 		}
 	}
 	
-	
-	$scope.mostrarPrudutos = function() {
-		produtoService.find().success(function(data) {
-			$scope.lista = data._embedded[produtoService.elements_name]
-			$scope.carregarUrlImagens()
-			$scope.view_atual = 'listagem'
-		})
-	}
-	
 	$scope.carregarUrlImagens = function() {
 		$scope.lista.forEach(function(element) {
 			produtoService.get(element._links.imagem.href).success(function(data) {
@@ -75,8 +66,13 @@ app.controller('produtosController', function($scope, config, produtoService, pr
 	}
 	
 	$scope.salvar = function() {
+		pedidoService.getOrCreate( $scope.salvarItem )
+	}
+	
+	$scope.salvarItem = function(pedido) {
+		$scope.form_element.pedido = pedido._links.self.href
 		itensService.add( $scope.form_element ).success(function() {
-			console.log( 'adicionou item' )
+			$scope.listagem()
 		})
 	}
 	
@@ -84,8 +80,36 @@ app.controller('produtosController', function($scope, config, produtoService, pr
 	
 })
 
-app.controller('carrinhoController', function($scope) {
+app.controller('carrinhoController', function($scope, pedidoService, itensService) {
 	
+	$scope.listagem = function() {
+		$scope.view_atual = 'loading'
+		pedidoService.getOrCreate( $scope.showPedido )
+	}
 	
+	$scope.showPedido = function(pedido) {
+		$scope.pedido = pedido
+		itensService.get( pedido._links.itens.href ).success(function(data) {
+			$scope.itens = data._embedded.itens
+			$scope.view_atual = 'listagem'
+		})
+	}
+	
+	$scope.finalizarPedido = function() {
+		$scope.alterarStatus('FINALIZADO', $scope.listagem)
+	}
+	
+	$scope.cancelarPedido = function() {
+		$scope.alterarStatus('CANCELADO', $scope.listagem)
+	}
+	
+	$scope.alterarStatus = function(status, callback) {
+		$scope.pedido.statusPedido = status
+		pedidoService.alterar( $scope.pedido ).success(function() {
+			callback()
+		})
+	}
+	
+	$scope.listagem()
 	
 })
